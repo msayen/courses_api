@@ -1,0 +1,18 @@
+version: "3"
+services:
+  courses-db:
+    image: postgres
+    environment: 
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+  courses-api:
+    build: .
+    environment:
+      - COURSES_DATABASE_HOST=courses-db
+      - COURSES_DATABASE_USERNAME=postgres
+      - COURSES_DATABASE_PASSWORD=password
+    ports:
+      - "3000:3000"
+    depends_on:
+      - courses-db

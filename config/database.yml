@@ -1,0 +1,15 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV.fetch("COURSES_DATABASE_HOST") {} %>
+  username: <%= ENV.fetch("COURSES_DATABASE_USERNAME") {} %>
+  password: <%= ENV.fetch("COURSES_DATABASE_PASSWORD") {} %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: courses_development
+
+test:
+  <<: *default
+  database: courses_test
