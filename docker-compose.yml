@@ -5,7 +5,7 @@ services:
     environment: 
       - POSTGRES_PASSWORD=password
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - ./tmp/db-docker:/var/lib/postgresql/data
   courses-api:
     build: .
     environment:
