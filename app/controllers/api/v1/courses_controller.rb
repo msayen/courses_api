@@ -2,15 +2,7 @@ module Api
   module V1
     class CoursesController < ApplicationController
       def index
-        enrollments_by_course = Enrollment.group(:course_id).count
-        result = Course.all.map do |course|
-          {
-            id: course.id,
-            name: course.name,
-            enrolled: enrollments_by_course[course.id] || 0
-          }
-        end
-        render_json(result)
+        render_json(Course.all_courses)
       end
 
       def create
