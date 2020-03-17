@@ -25,16 +25,7 @@ module Api
 
       def courses
         user = User.find(params[:id])
-        enrollments = user.enrollments
-        courses_by_id = Course.where(id: enrollments.map(&:course_id))
-                              .map { |course| [course.id, course] }.to_h
-        result = enrollments.map do |enrollment|
-          {
-            enrollment_id: enrollment.id,
-            course: courses_by_id[enrollment.course_id]
-          }
-        end
-        render_json(result)
+        render_json(user.all_enrollments)
       end
 
       private
