@@ -3,29 +3,31 @@ module Api
     class UsersController < ApplicationController
       def index
         users = User.all
-        render as_json(users)
+        render_json(users)
       end
 
       def find_by_email
         user = User.find_by(email: params[:email])
-        render user ? as_json(user) : { status: :not_found }
+        user ? render_json(user) : render_not_found
       end
 
       def create
         user = User.new(user_params)
         user.save!
-        render as_json(user)
+        render_json(user)
       end
 
       def destroy
         user = User.find(params[:id])
         user.destroy!
-        render status: :no_content
+        render_no_content
       end
 
       def courses
         user = User.find(params[:id])
-        render as_json(user.courses)
+        enrollments = Enrollment.where(user_id: user.id)
+        courses = Course.where(id: enrollments.map(&:course_id))
+        render_json(courses)
       end
 
       private

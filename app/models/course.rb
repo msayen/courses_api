@@ -3,19 +3,15 @@ class Course < ApplicationRecord
   has_many :enrollments
 
   def enroll(user_id)
-    user = User.find(user_id)
-    raise EnrollmentError, 'User already enrolled' if users.include?(user)
+    raise EnrollmentError, 'User already enrolled' if enrollment_exists?(id, user_id)
 
-    users << user
-    save!
+    e = Enrollment.new(course_id: id, user_id: user_id)
+    e.save!
+    e
   end
 
-  def unenroll(user_id)
-    user = User.find(user_id)
-    raise EnrollmentError, 'User was not enrolled to this course' if users.exclude?(user)
-
-    users.delete(user)
-    save!
+  def enrollment_exists?(course_id, user_id)
+    Enrollment.find_by(course_id: course_id, user_id: user_id).present?
   end
 
   class EnrollmentError < RuntimeError

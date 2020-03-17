@@ -6,8 +6,8 @@ Rails.application.routes.draw do
       get 'users/:id/courses', controller: :users, action: :courses
 
       resources :courses, only: %i[index create destroy]
-      post 'courses/:course_id/enroll', controller: :courses, action: :enroll
-      post 'courses/:course_id/unenroll', controller: :courses, action: :unenroll
+
+      resources :enrollments, only: %i[create destroy]
     end
   end
 end
