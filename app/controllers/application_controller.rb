@@ -2,6 +2,8 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordInvalid, with: :render_record_invalid
   rescue_from ActiveRecord::RecordNotFound, with: :render_record_not_found
 
+  JSON = 'application/json'.freeze
+
   def render_json(model)
     render(
       json: model,
@@ -19,14 +21,14 @@ class ApplicationController < ActionController::API
   end
 
   def render_created
-    render status: :created
+    render status: :created, content_type: JSON
   end
 
   def render_no_content
-    render status: :no_content
+    render status: :no_content, content_type: JSON
   end
 
   def render_not_found
-    render status: 404
+    render status: 404, content_type: JSON
   end
 end
