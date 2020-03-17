@@ -87,8 +87,8 @@ describe Api::V1::UsersController, type: :request do
       user = create(:user)
       course1 = create(:course)
       course2 = create(:course)
-      course1.enroll(user.id)
-      course2.enroll(user.id)
+      enrollment1 = course1.enroll(user.id)
+      enrollment2 = course2.enroll(user.id)
 
       get "/api/v1/users/#{user.id}/courses"
 
@@ -96,12 +96,18 @@ describe Api::V1::UsersController, type: :request do
       expect(response_body).to match_array(
         [
           {
-            id: course1.id,
-            name: course1.name
+            enrollment_id: enrollment1.id,
+            course: {
+              id: course1.id,
+              name: course1.name
+            }
           },
           {
-            id: course2.id,
-            name: course2.name
+            enrollment_id: enrollment2.id,
+            course: {
+              id: course2.id,
+              name: course2.name
+            }
           }
         ]
       )
