@@ -1,21 +1,28 @@
 class Course < ApplicationRecord
   validates :name, presence: true, uniqueness: true
-  has_and_belongs_to_many :users
+  has_many :enrollments
 
-  def enroll(user_id)
-    user = User.find(user_id)
-    raise EnrollmentError, 'User already enrolled' if users.include?(user)
-
-    users << user
-    save!
+  def self.all_courses
+    enrollments_by_course = Enrollment.group(:course_id).count
+    Course.all.map do |course|
+      {
+        id: course.id,
+        name: course.name,
+        enrolled: enrollments_by_course[course.id] || 0
+      }
+    end
   end
 
-  def unenroll(user_id)
-    user = User.find(user_id)
-    raise EnrollmentError, 'User was not enrolled to this course' if users.exclude?(user)
+  def enroll(user_id)
+    raise EnrollmentError, 'User already enrolled' if enrollment_exists?(id, user_id)
 
-    users.delete(user)
-    save!
+    enrollment = Enrollment.new(course_id: id, user_id: user_id)
+    enrollment.save!
+    enrollment
+  end
+
+  def enrollment_exists?(course_id, user_id)
+    Enrollment.find_by(course_id: course_id, user_id: user_id).present?
   end
 
   class EnrollmentError < RuntimeError

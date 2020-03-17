@@ -36,69 +36,6 @@ describe Api::V1::CoursesController, type: :request do
     end
   end
 
-  context 'user enrollment' do
-    it 'enrolls a user' do
-      course = create(:course)
-      user = create(:user)
-
-      post "/api/v1/courses/#{course.id}/enroll", params: { user_id: user.id }
-
-      expect(response.status).to eq(200)
-      expect(course.users).to include(user)
-      expect(user.courses).to include(course)
-    end
-
-    it 'handles enrolling for non-existent course' do
-      user = create(:user)
-
-      post '/api/v1/courses/100000/enroll', params: { user_id: user.id }
-
-      expect(response.status).to eq(404)
-      expect(response_body[:message]).to match(/Course/)
-    end
-
-    it 'handles enrolling of non-existent user' do
-      course = create(:course)
-
-      post "/api/v1/courses/#{course.id}/enroll", params: { user_id: 1_000_000 }
-
-      expect(response.status).to eq(404)
-      expect(response_body[:message]).to match(/User/)
-    end
-
-    it 'handles double enrollment' do
-      course = create(:course)
-      user = create(:user)
-      course.enroll(user.id)
-
-      post "/api/v1/courses/#{course.id}/enroll", params: { user_id: user.id }
-
-      expect(response.status).to eq(422)
-      expect(response_body[:message]).to match(/User/)
-    end
-
-    it 'unenrolls a user' do
-      course = create(:course)
-      user = create(:user)
-      course.enroll(user.id)
-
-      post "/api/v1/courses/#{course.id}/unenroll", params: { user_id: user.id }
-
-      expect(response.status).to eq(200)
-      expect(course.reload.users).not_to include(user)
-      expect(user.reload.courses).not_to include(course)
-    end
-
-    it 'handles unenrolling of non-existent user' do
-      course = create(:course)
-
-      post "/api/v1/courses/#{course.id}/unenroll", params: { user_id: 1_000_000 }
-
-      expect(response.status).to eq(404)
-      expect(response_body[:message]).to match(/User/)
-    end
-  end
-
   context 'course list' do
     it 'fetches list of courses with number of enrollments' do
       course1 = create(:course)

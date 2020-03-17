@@ -137,7 +137,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"user_id\": 2 }",
+					"raw": "{ \"user_id\": 16, \"course_id\": 6 }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -145,7 +145,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/v1/courses/2/enroll",
+					"raw": "http://localhost:3000/api/v1/enrollments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -154,9 +154,7 @@
 					"path": [
 						"api",
 						"v1",
-						"courses",
-						"2",
-						"enroll"
+						"enrollments"
 					]
 				}
 			},
@@ -165,7 +163,7 @@
 		{
 			"name": "unenrolling a user from a course",
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -176,7 +174,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"user_id\": 2 }",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -184,7 +182,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/v1/courses/2/unenroll",
+					"raw": "http://localhost:3000/api/v1/enrollments/2/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -193,9 +191,9 @@
 					"path": [
 						"api",
 						"v1",
-						"courses",
+						"enrollments",
 						"2",
-						"unenroll"
+						""
 					]
 				}
 			},
@@ -218,7 +216,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"user_id\": 2 }",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -226,7 +224,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/v1/users/4/courses",
+					"raw": "http://localhost:3000/api/v1/users/16/courses",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -236,8 +234,55 @@
 						"api",
 						"v1",
 						"users",
-						"4",
+						"16",
 						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find user by email",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/users/find?email=aa@zz.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"find"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "aa@zz.com"
+						}
 					]
 				}
 			},
@@ -260,7 +305,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"user_id\": 2 }",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
